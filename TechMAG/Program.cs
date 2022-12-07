@@ -1,5 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
+//Add DbCountext
+builder.Services.AddDbContext<TechMAG.Data.AppDbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
