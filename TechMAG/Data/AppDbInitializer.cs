@@ -80,7 +80,7 @@ namespace TechMAG.Data
                             ImageURL = "https://www.shutterstock.com/image-photo/kiev-ukraine-march-31-2015-260nw-265456295.jpg",
                             HomeURL = "https://www.hp.com/ro-ro/home.html",
                             Desciption = "Descriere"
-                        }
+                        },
                         new Producer()
                         {
                             Name = "Samsung",
