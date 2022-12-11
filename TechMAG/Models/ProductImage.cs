@@ -10,11 +10,5 @@ namespace TechMAG.Models
         public string? ProductImageURL { get; set; }
         public DateTime? CreatedDate { get; set; }
 
-        //Relationships
-        //Product
-        public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
-        public Product? Product { get; set; }
-
     }
 }

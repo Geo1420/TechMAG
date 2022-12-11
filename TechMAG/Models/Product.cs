@@ -21,9 +21,6 @@ namespace TechMAG.Models
         public ProductCategory ProductCategory { get; set; }
 
         //Relationships
-        //ProductImgs
-        public List<ProductImage>? ProductImages { get; set; }
-
         //Producer
         public int ProducerId { get; set; }
         [ForeignKey("ProducerId")]
