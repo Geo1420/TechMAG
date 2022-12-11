@@ -1,0 +1,72 @@
+﻿@model IEnumerable<TechMAG.Models.Product>
+<head>
+     <link rel="stylesheet" href="~/css/Products.css" asp-append-version="true" />
+     <link rel="stylesheet" href="~/css/Navbar.css" asp-append-version="true" />
+     <link rel="stylesheet" href="~/css/DropDown.css" asp-append-version="true" />
+     <link rel="stylesheet" href="~/css/SearchBar.css" asp-append-version="true" />
+     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true"  />
+ </head>
+@{
+    ViewData["Title"] = "Index";
+}
+<!--Product List-->
+    <div class="container mydiv">
+        <div class="row">
+@foreach (var item in Model) {
+        <!--First Product-->
+        <div class="col-md-4">
+          <!-- bbb_deals -->
+          <div class="bbb_deals">
+            <div class="bbb_deals_title">@Html.DisplayFor(modelItem => item.Name)</div><!-- Product name-->
+            <div class="bbb_deals_slider_container">
+              <div class="bbb_deals_item">
+                <div class="bbb_deals_image">
+                  <img id="imgProd" src="@Html.DisplayFor(modelItem => item.ImageURL)" alt="" />
+                </div>
+                <div class="bbb_deals_content">
+                  <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
+                    <div class="bbb_deals_item_category"><a href="#">Laptops</a></div>
+                    <div class="bbb_deals_item_price_a ml-auto"> Old Price
+                      <strike>@Html.DisplayFor(modelItem => item.Price)$</strike>
+                    </div>
+                  </div>
+                  <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
+                    <div class="bbb_deals_item_name">HP Notebook</div>
+                    <div class="bbb_deals_item_price ml-auto">@Html.DisplayFor(modelItem => item.Discount)$</div>
+                  </div>
+                  <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
+                    <div class="bbb_deals_item_description float-left"> <!--Product description-->
+                      @Html.DisplayFor(modelItem => item.Description)
+                    </div>
+                  </div>
+                  <div class="available">
+                    <div class="available_line d-flex flex-row justify-content-start">
+                      <div class="available_title"> Available</div>
+                      <div class="sold_stars ml-auto">
+                        <i class="fa fa-star"></i> 
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i> 
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="align-items-center align-content-center">
+                    <div class="d-flex flex-column mt-4">
+                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id" >Details</a>
+                    <button class="btn btn-outline-primary btn-sm mt-2" type="button">ADD TO CART</button>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+}
+</div>
+</div> 
+

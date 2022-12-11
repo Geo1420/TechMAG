@@ -1,8 +1,53 @@
-﻿@{
+﻿ <head>
+     <link rel="stylesheet" href="~/css/Home.css" asp-append-version="true" />
+ </head>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!--Slider start-->
+<div class="slider_container">
+    <div class="slider">
+      <div class="slides">
+        <!--Radio buttons start-->
+        <input type="radio" name="radio-btn" id="radio1" />
+        <input type="radio" name="radio-btn" id="radio2" />
+        <input type="radio" name="radio-btn" id="radio3" />
+        <input type="radio" name="radio-btn" id="radio4" />
+        <!--Radio buttons End-->
+        <!--Slide img Start-->
+        <div class="slide first">
+          <img src="/css/HWZ_BF_Phone_Deals.png" alt="" />
+        </div>
+        <div class="slide">
+          <img src="/css/super-sale-phone.png" alt="" />
+        </div>
+        <div class="slide">
+          <img src="/css/Diwali-Laptop-Offers.jpg" alt="" />
+        </div>
+        <div class="slide">
+          <img src="/css/amazon-black-friday-pc-accessories.png" alt="" />
+        </div>
+        <!--Slide img end-->
+        <!--Autoslide start-->
+        <div class="auto_navigation">
+          <div class="auto-btn1"></div>
+          <div class="auto-btn2"></div>
+          <div class="auto-btn3"></div>
+          <div class="auto-btn4"></div>
+        </div>
+        <!--Autoslide end-->
+      </div>
+      <!--Manual navigation start-->
+      <div class="manual_navigation">
+        <label for="radio1" class="manual_btn"></label>
+        <label for="radio2" class="manual_btn"></label>
+        <label for="radio3" class="manual_btn"></label>
+        <label for="radio4" class="manual_btn"></label>
+      </div>
+      <!--Manual navigation end-->
+    </div>
+  </div>
+  <!--Slider End-->
+  <script src="~/js/ImgChanger.js" asp-append-version="true"></script>
