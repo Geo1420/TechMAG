@@ -1,7 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using TechMAG.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
-//Add DbCountext
-builder.Services.AddDbContext<TechMAG.Data.AppDbContext>();
+//Add DbContext
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TechMAG")));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
