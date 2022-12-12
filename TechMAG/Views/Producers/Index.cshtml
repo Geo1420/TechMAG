@@ -31,7 +31,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageURL)
+                <img src="@Html.DisplayFor(modelItem => item.ImageURL)" class="rounded-circle" alt="Cinque Terre">
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Desciption)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HomeURL)
+                <a href="@Html.DisplayFor(modelItem => item.HomeURL)" > HomePage</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

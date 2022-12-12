@@ -44,7 +44,13 @@
                   </div>
                   <div class="available">
                     <div class="available_line d-flex flex-row justify-content-start">
-                      <div class="available_title"> Available</div>
+                      @if(item.Amount > 1)
+                      {
+                          <div class="available_title"> Available</div>
+                      }2
+                      else{
+                          <div class="available_title" style="color: red"> Unavailable</div>
+                      }
                       <div class="sold_stars ml-auto">
                         <i class="fa fa-star"></i> 
                         <i class="fa fa-star"></i>
@@ -57,7 +63,7 @@
                   <div class="align-items-center align-content-center">
                     <div class="d-flex flex-column mt-4">
                     <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id" >Details</a>
-                    <button class="btn btn-outline-primary btn-sm mt-2" type="button">ADD TO CART</button>
+                    <a class="btn btn-outline-primary btn-sm mt-2" @((item.Amount < 1) ? "disabled" : "")>ADD TO CART</a>
                   </div>
                 </div>
                 </div>
