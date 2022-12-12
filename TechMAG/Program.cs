@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TechMAG.Data;
+using TechMAG.Data.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TechMAG")));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//Config the services
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
+builder.Services.AddScoped<IProducerService, ProducerService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 

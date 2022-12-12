@@ -6,35 +6,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMAG.Data;
+using TechMAG.Data.Services;
 using TechMAG.Models;
 
 namespace TechMAG.Controllers
 {
     public class ProducersController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IProducerService _service;
 
-        public ProducersController(AppDbContext context)
+        public ProducersController(IProducerService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: Producers
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Producers.ToListAsync());
+            var result = await _service.GetAllAsync();
+              return View(result);
         }
 
         // GET: Producers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Producers == null)
-            {
-                return NotFound();
-            }
-
-            var producer = await _context.Producers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var producer = await _service.GetByIdAsync(id);
             if (producer == null)
             {
                 return NotFound();
@@ -58,22 +54,16 @@ namespace TechMAG.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(producer);
-                await _context.SaveChangesAsync();
+                _service.AddAsync(producer);
                 return RedirectToAction(nameof(Index));
             }
             return View(producer);
         }
 
         // GET: Producers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Producers == null)
-            {
-                return NotFound();
-            }
-
-            var producer = await _context.Producers.FindAsync(id);
+            var producer = await _service.GetByIdAsync(id);
             if (producer == null)
             {
                 return NotFound();
@@ -93,39 +83,19 @@ namespace TechMAG.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(producer);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProducerExists(producer.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(producer);
             }
-            return View(producer);
+            await _service.UpdateAsync(id, producer);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Producers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Producers == null)
-            {
-                return NotFound();
-            }
 
-            var producer = await _context.Producers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var producer = await _service.GetByIdAsync(id);
             if (producer == null)
             {
                 return NotFound();
@@ -139,23 +109,14 @@ namespace TechMAG.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Producers == null)
+            var producer = await _service.GetByIdAsync(id);
+            if (producer == null)
             {
-                return Problem("Entity set 'AppDbContext.Producers'  is null.");
+                return NotFound();
             }
-            var producer = await _context.Producers.FindAsync(id);
-            if (producer != null)
-            {
-                _context.Producers.Remove(producer);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool ProducerExists(int id)
-        {
-          return _context.Producers.Any(e => e.Id == id);
+            await _service.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

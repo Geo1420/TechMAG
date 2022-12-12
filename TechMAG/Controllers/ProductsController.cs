@@ -6,37 +6,32 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMAG.Data;
+using TechMAG.Data.Services;
+using TechMAG.Data.ViewModel;
 using TechMAG.Models;
 
 namespace TechMAG.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IProductService _service;
 
-        public ProductsController(AppDbContext context)
+        public ProductsController(IProductService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Products.Include(p => p.Producer);
-            return View(await appDbContext.ToListAsync());
+            var data = await _service.GetAllAsync(n => n.Producer);
+            return View(data);
         }
 
         // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Producer)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _service.GetProductByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -46,9 +41,11 @@ namespace TechMAG.Controllers
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ProducerId"] = new SelectList(_context.Producers, "Id", "Id");
+            var productDropDownData = await _service.GetNewProductDropDownVal();
+            ViewBag.ProducerId = new SelectList(productDropDownData.Producers,"Id","Name");
+
             return View();
         }
 
@@ -57,82 +54,78 @@ namespace TechMAG.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Description,ImageURL,ScreenSize,OperatingSystem,Amount,Created,Discount,ProductCategory,ProducerId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,Description,ImageURL,ScreenSize,OperatingSystem,Amount,Created,Discount,ProductCategory,ProducerId")] ProductVM product)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(product);
             }
-            ViewData["ProducerId"] = new SelectList(_context.Producers, "Id", "Id", product.ProducerId);
-            return View(product);
+            await _service.AddNewProductAsync(product);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
+        //// GET: Products/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null || _context.Products == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            ViewData["ProducerId"] = new SelectList(_context.Producers, "Id", "Id", product.ProducerId);
-            return View(product);
-        }
+        //    var product = await _context.Products.FindAsync(id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["ProducerId"] = new SelectList(_context.Producers, "Id", "Id", product.ProducerId);
+        //    return View(product);
+        //}
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Description,ImageURL,ScreenSize,OperatingSystem,Amount,Created,Discount,ProductCategory,ProducerId")] Product product)
-        {
-            if (id != product.Id)
-            {
-                return NotFound();
-            }
+        //// POST: Products/Edit/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Description,ImageURL,ScreenSize,OperatingSystem,Amount,Created,Discount,ProductCategory,ProducerId")] Product product)
+        //{
+        //    if (id != product.Id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ProducerId"] = new SelectList(_context.Producers, "Id", "Id", product.ProducerId);
-            return View(product);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(product);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!ProductExists(product.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["ProducerId"] = new SelectList(_context.Producers, "Id", "Id", product.ProducerId);
+        //    return View(product);
+        //}
 
         // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _service.GetByIdAsync(id) == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Producer)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _service.GetByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -146,23 +139,18 @@ namespace TechMAG.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Products == null)
+            if (_service.GetByIdAsync(id) == null)
             {
                 return Problem("Entity set 'AppDbContext.Products'  is null.");
             }
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            var product = await _service.GetByIdAsync(id);
+            if (product == null)
             {
-                _context.Products.Remove(product);
+                return NotFound();
             }
             
-            await _context.SaveChangesAsync();
+            await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProductExists(int id)
-        {
-          return _context.Products.Any(e => e.Id == id);
         }
     }
 }

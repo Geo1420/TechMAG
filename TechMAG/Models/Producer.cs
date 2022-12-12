@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TechMAG.Data.Base;
 
 namespace TechMAG.Models
 {
-    public class Producer
+    public class Producer: IEntityBase
     {
         [Key]
         public int Id { get; set; }

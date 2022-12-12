@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TechMAG.Data;
+using TechMAG.Data.Base;
 
 namespace TechMAG.Models
 {
-    public class Product
+    public class Product: IEntityBase
     {
         [Key]
         public int Id { get; set; }

@@ -28,7 +28,7 @@
                 </div>
                 <div class="bbb_deals_content">
                   <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
-                    <div class="bbb_deals_item_category"><a href="#">Laptops</a></div>
+                    <div class="bbb_deals_item_category"><a href="#">@item.Producer.Name</a></div>
                     <div class="bbb_deals_item_price_a ml-auto"> Old Price
                       <strike>@Html.DisplayFor(modelItem => item.Price)$</strike>
                     </div>
@@ -44,11 +44,10 @@
                   </div>
                   <div class="available">
                     <div class="available_line d-flex flex-row justify-content-start">
-                      @if(item.Amount > 1)
+                      @if(item.Amount > 0)
                       {
-                          <div class="available_title"> Available</div>
-                      }2
-                      else{
+                          <div class="available_title">Available</div>
+                      }else if(item.Amount == 0){
                           <div class="available_title" style="color: red"> Unavailable</div>
                       }
                       <div class="sold_stars ml-auto">
@@ -63,7 +62,7 @@
                   <div class="align-items-center align-content-center">
                     <div class="d-flex flex-column mt-4">
                     <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id" >Details</a>
-                    <a class="btn btn-outline-primary btn-sm mt-2" @((item.Amount < 1) ? "disabled" : "")>ADD TO CART</a>
+                    <a class="btn btn-outline-primary btn-sm mt-2" @((item.Amount <= 0) ? "disabled" : "")>ADD TO CART</a>
                   </div>
                 </div>
                 </div>
