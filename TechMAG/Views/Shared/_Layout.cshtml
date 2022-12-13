@@ -62,6 +62,9 @@
           <li id="navbar__item">
             <a id="navbar__links" asp-area="" asp-controller="Home" asp-action="Index" >Register</a>
           </li>
+         <ul class="navbar-nav">
+          @await Component.InvokeAsync("ShoppingCartSummary")
+         </ul>
         </ul>
       </div>
     </div>
