@@ -10,5 +10,6 @@ namespace TechMAG.Data.Services
         Task<Product> GetProductByIdAsync(int id);
         Task<ProductDropDownVM> GetNewProductDropDownVal();
         Task AddNewProductAsync(ProductVM data);
+        Task UpdateMovieAsync(ProductVM data);
     }
 }

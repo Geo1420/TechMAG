@@ -4,6 +4,7 @@ namespace TechMAG.Data.ViewModel
 {
     public class ProductVM
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Name is required")]
         [Display(Name = "Product name")]
         public string? Name { get; set; }

@@ -62,7 +62,11 @@
                   <div class="align-items-center align-content-center">
                     <div class="d-flex flex-column mt-4">
                     <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id" >Details</a>
-                    <a class="btn btn-outline-primary btn-sm mt-2" @((item.Amount <= 0) ? "disabled" : "")>ADD TO CART</a>
+                    <a class="btn btn-success text-white @((item.Discount <= 0) ? "disabled" : "")" 
+                                   asp-controller="Orders" 
+                                   asp-action="AddItemToShoppingCart" 
+                                   asp-route-id="@item.Id">
+                                <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c"))</a>
                   </div>
                 </div>
                 </div>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechMAG.Data;
 
@@ -11,9 +12,10 @@ using TechMAG.Data;
 namespace TechMAG.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221213135700_Order_OrderItem")]
+    partial class Order_OrderItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,30 +164,6 @@ namespace TechMAG.Migrations
                     b.ToTable("ProductImages");
                 });
 
-            modelBuilder.Entity("TechMAG.Models.ShoppingCartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShoppingCartId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ShoppingCartItems");
-                });
-
             modelBuilder.Entity("TechMAG.Models.OrderItem", b =>
                 {
                     b.HasOne("TechMAG.Models.Order", "Order")
@@ -214,15 +192,6 @@ namespace TechMAG.Migrations
                         .IsRequired();
 
                     b.Navigation("Producer");
-                });
-
-            modelBuilder.Entity("TechMAG.Models.ShoppingCartItem", b =>
-                {
-                    b.HasOne("TechMAG.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("TechMAG.Models.Order", b =>

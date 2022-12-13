@@ -27,6 +27,21 @@ namespace TechMAG.Controllers
             var data = await _service.GetAllAsync(n => n.Producer);
             return View(data);
         }
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var allProducts = await _service.GetAllAsync(n => n.Producer);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //var filteredResult = allMovies.Where(n => n.Name.ToLower().Contains(searchString.ToLower()) || n.Description.ToLower().Contains(searchString.ToLower())).ToList();
+
+                var filteredResultNew = allProducts.Where(n => string.Equals(n.Name, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.Description, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+
+                return View("Index", filteredResultNew);
+            }
+
+            return View("Index", allProducts);
+        }
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int id)
@@ -64,67 +79,43 @@ namespace TechMAG.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //// GET: Products/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null || _context.Products == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var product = await _context.Products.FindAsync(id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["ProducerId"] = new SelectList(_context.Producers, "Id", "Id", product.ProducerId);
-        //    return View(product);
-        //}
-
-        //// POST: Products/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Description,ImageURL,ScreenSize,OperatingSystem,Amount,Created,Discount,ProductCategory,ProducerId")] Product product)
-        //{
-        //    if (id != product.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(product);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!ProductExists(product.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["ProducerId"] = new SelectList(_context.Producers, "Id", "Id", product.ProducerId);
-        //    return View(product);
-        //}
-
-        // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        // GET: Products/Edit/5
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _service.GetByIdAsync(id) == null)
+
+            var productDetails = await _service.GetProductByIdAsync(id);
+            if (productDetails == null)
             {
                 return NotFound();
             }
 
+            var productDropDownData = await _service.GetNewProductDropDownVal();
+            ViewBag.ProducerId = new SelectList(productDropDownData.Producers, "Id", "Name");
+
+            return View(productDetails);
+        }
+
+        // POST: Products/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Description,ImageURL,ScreenSize,OperatingSystem,Amount,Created,Discount,ProductCategory,ProducerId")] ProductVM product)
+        {
+
+            if(!ModelState.IsValid)
+            {
+                var productDropDownData = await _service.GetNewProductDropDownVal();
+                ViewBag.ProducerId = new SelectList(productDropDownData.Producers, "Id", "Name");
+            }
+
+            await _service.UpdateMovieAsync(product);
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Products/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
             var product = await _service.GetByIdAsync(id);
             if (product == null)
             {
@@ -139,10 +130,6 @@ namespace TechMAG.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_service.GetByIdAsync(id) == null)
-            {
-                return Problem("Entity set 'AppDbContext.Products'  is null.");
-            }
             var product = await _service.GetByIdAsync(id);
             if (product == null)
             {

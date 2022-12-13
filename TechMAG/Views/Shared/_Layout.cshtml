@@ -50,15 +50,9 @@
         <ul id="navbar__menu">
             <li id="navbar__item">
                 <div id="search">
-                    <form action="#" >
-                        <input type="text"
-                            placeholder=" Search..."
-                            name="search">
-                        <button>
-                            <i class="fa fa-search"
-                                style="font-size: 24px; color: blue;">
-                            </i>
-                        </button>
+                    <form asp-controller="Products" asp-action="Search" >
+                        <input type="text" name="searchString" placeholder="Search for a product..." aria-label="Recipient's username">
+                        <button> <i class="fa fa-search" style="font-size: 24px; color: blue;"></i></button>
                     </form>
                 </div>
               </li>

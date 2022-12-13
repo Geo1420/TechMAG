@@ -43,5 +43,26 @@ namespace TechMAG.Data.Services
 
             return productDetails;
         }
+
+        public async Task UpdateMovieAsync(ProductVM data)
+        {
+            var dbProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == data.Id);
+            if(dbProduct != null)
+            {
+                dbProduct.Name = data.Name;
+                dbProduct.Description = data.Description;
+                dbProduct.Price = data.Price;
+                dbProduct.ProductCategory = data.ProductCategory;
+                dbProduct.ProducerId = data.ProducerId;
+                dbProduct.Amount = data.Amount;
+                dbProduct.Created = data.Created;
+                dbProduct.Discount = data.Discount;
+                dbProduct.ScreenSize = data.ScreenSize;
+                dbProduct.ImageURL = data.ImageURL;
+                dbProduct.OperatingSystem = data.OperatingSystem;
+                await _context.SaveChangesAsync();
+            }
+            
+        }
     }
 }
