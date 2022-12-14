@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TechMAG.Data.Cart;
 using TechMAG.Data.Services;
 using TechMAG.Data.ViewModel;
@@ -9,11 +10,12 @@ namespace TechMAG.Controllers
     {
         private readonly IProductService _productsService;
         private readonly ShoppingCart _shoppingCart;
-
-        public OrdersController(IProductService productsService, ShoppingCart shoppingCart)
+        private readonly IOrderServices _ordersService;
+        public OrdersController(IProductService productsService, ShoppingCart shoppingCart, IOrderServices ordersService)
         {
             _productsService = productsService;
             _shoppingCart = shoppingCart;
+            _ordersService = ordersService;
         }
 
         public IActionResult ShoppingCart()
@@ -48,6 +50,18 @@ namespace TechMAG.Controllers
                 _shoppingCart.RemoveItemFromCart(item);
             }
             return RedirectToAction(nameof(ShoppingCart));
+        }
+
+        public async Task<IActionResult> CompleteOrder()
+        {
+            var items = _shoppingCart.GetShoppingCartItems();
+            string userId = "";
+            string userEmailAddress = "";
+
+            await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
+            await _shoppingCart.ClearShoppingCartAsync();
+
+            return View("OrderCompleted");
         }
     }
 }
