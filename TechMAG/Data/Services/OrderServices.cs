@@ -11,7 +11,7 @@ namespace TechMAG.Data.Services
             _context = context;
         }
 
-        public async Task<List<Order>> GetOrdersByUserIdAsync(string userId, string userRole)
+        public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
         {
             var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Product).Where(n =>n.UserId == userId).ToListAsync();
 
