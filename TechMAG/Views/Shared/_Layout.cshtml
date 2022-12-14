@@ -19,25 +19,7 @@
 </head>
 <body>
     <header>
-       <!-- <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TechMAG</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>-->
+       
         <!--Start Navbar-->
     <div id="navbar1">
       <div id="navbar__container">
@@ -47,7 +29,7 @@
           <span class="bar"></span>
           <span class="bar"></span>
         </div>
-        <ul id="navbar__menu">
+        <ul id="navbar__menu" >
             <li id="navbar__item">
                 <div id="search">
                     <form asp-controller="Products" asp-action="Search" >
@@ -62,10 +44,13 @@
           <li id="navbar__item">
             <a id="navbar__links" asp-area="" asp-controller="Home" asp-action="Index" >Register</a>
           </li>
-         <ul class="navbar-nav">
+          
+        </ul>
+        <!--Add ShoppingCartSummary-->
+         <ul class="navbar-nav align-self-lg-center">
           @await Component.InvokeAsync("ShoppingCartSummary")
          </ul>
-        </ul>
+
       </div>
     </div>
     </header>
