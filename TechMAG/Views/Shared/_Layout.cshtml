@@ -33,18 +33,12 @@
             <li id="navbar__item">
                 <div id="search">
                     <form asp-controller="Products" asp-action="Search" >
-                        <input type="text" name="searchString" placeholder="Search for a product..." aria-label="Recipient's username">
+                        <input type="text" name="searchString" placeholder=" Search for a product..." aria-label="Recipient's username">
                         <button> <i class="fa fa-search" style="font-size: 24px; color: blue;"></i></button>
                     </form>
                 </div>
               </li>
-          <li id="navbar__item">
-            <a id="navbar__links" asp-area="" asp-controller="Home" asp-action="Index" >Login</a>
-          </li>
-          <li id="navbar__item">
-            <a id="navbar__links" asp-area="" asp-controller="Home" asp-action="Index" >Register</a>
-          </li>
-          
+              <partial name="_Identity.cshtml" ></partial>
         </ul>
         <!--Add ShoppingCartSummary-->
          <ul class="navbar-nav align-self-lg-center">
