@@ -30,12 +30,12 @@
                   <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
                     <div class="bbb_deals_item_category"><a href="#">@item.Producer.Name</a></div>
                     <div class="bbb_deals_item_price_a ml-auto"> Old Price
-                      <strike>@Html.DisplayFor(modelItem => item.Price)$</strike>
+                      <strike>$@Html.DisplayFor(modelItem => item.Price)</strike>
                     </div>
                   </div>
                   <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
                     <div class="bbb_deals_item_name">HP Notebook</div>
-                    <div class="bbb_deals_item_price ml-auto">@Html.DisplayFor(modelItem => item.Discount)$</div>
+                    <div class="bbb_deals_item_price ml-auto">$@(item.Price - item.Discount)</div>
                   </div>
                   <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
                     <div class="bbb_deals_item_description float-left"> <!--Product description-->
@@ -62,11 +62,11 @@
                   <div class="align-items-center align-content-center">
                     <div class="d-flex flex-column mt-4">
                     <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id" >Details</a>
-                    <a class="btn btn-success text-white @((item.Discount <= 0) ? "disabled" : "")" 
+                    <a class="btn btn-success text-white @((item.Amount <= 0) ? "disabled" : "")" 
                                    asp-controller="Orders" 
                                    asp-action="AddItemToShoppingCart" 
                                    asp-route-id="@item.Id">
-                                <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c"))</a>
+                    <i class="bi bi-cart-plus"></i> Add to Cart (Price $@(item.Price - item.Discount))</a>
                   </div>
                 </div>
                 </div>
