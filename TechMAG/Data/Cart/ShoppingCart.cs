@@ -33,7 +33,7 @@ namespace TechMAG.Data.Cart
         public double GetShoppingCartTotal()
         {
             var total = _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId)
-                .Select(n => (n.Product.Price - n.Product.Discount) * n.Amount).Sum();
+                .Select(n => (n.Product.Price) * n.Amount).Sum();
 
             return total;
         }

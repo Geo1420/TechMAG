@@ -29,13 +29,10 @@
                 <div class="bbb_deals_content">
                   <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
                     <div class="bbb_deals_item_category"><a href="#">@item.Producer.Name</a></div>
-                    <div class="bbb_deals_item_price_a ml-auto"> Old Price
-                      <strike>$@Html.DisplayFor(modelItem => item.Price)</strike>
-                    </div>
                   </div>
                   <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
                     <div class="bbb_deals_item_name">HP Notebook</div>
-                    <div class="bbb_deals_item_price ml-auto">$@(item.Price - item.Discount)</div>
+                    <div class="bbb_deals_item_price ml-auto">$@item.Price</div>
                   </div>
                   <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
                     <div class="bbb_deals_item_description float-left"> <!--Product description-->
@@ -66,7 +63,7 @@
                                    asp-controller="Orders" 
                                    asp-action="AddItemToShoppingCart" 
                                    asp-route-id="@item.Id">
-                    <i class="bi bi-cart-plus"></i> Add to Cart (Price $@(item.Price - item.Discount))</a>
+                    <i class="bi bi-cart-plus"></i> Add to Cart (Price $@item.Price)</a>
                   </div>
                 </div>
                 </div>

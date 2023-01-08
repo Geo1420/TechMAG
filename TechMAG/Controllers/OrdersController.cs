@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TechMAG.Data.Cart;
 using TechMAG.Data.Services;
@@ -26,6 +27,7 @@ namespace TechMAG.Controllers
             var orders = await _ordersService.GetOrdersByUserIdAndRoleAsync(userId, userRole);
             return View(orders);
         }
+        
         public IActionResult ShoppingCart()
         {
             var items = _shoppingCart.GetShoppingCartItems();
@@ -39,6 +41,7 @@ namespace TechMAG.Controllers
 
             return View(response);
         }
+        [Authorize]
         public async Task<IActionResult> AddItemToShoppingCart(int id)
         {
             var item = await _productsService.GetProductByIdAsync(id);
