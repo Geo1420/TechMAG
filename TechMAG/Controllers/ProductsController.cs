@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,7 @@ namespace TechMAG.Controllers
         }
 
         // GET: Products/Create
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             var productDropDownData = await _service.GetNewProductDropDownVal();
@@ -68,6 +70,7 @@ namespace TechMAG.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Price,Description,ImageURL,ScreenSize,OperatingSystem,Amount,Created,Discount,ProductCategory,ProducerId")] ProductVM product)
         {
             if (!ModelState.IsValid)
@@ -79,6 +82,7 @@ namespace TechMAG.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
 
@@ -99,6 +103,7 @@ namespace TechMAG.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Description,ImageURL,ScreenSize,OperatingSystem,Amount,Created,Discount,ProductCategory,ProducerId")] ProductVM product)
         {
 
@@ -113,6 +118,7 @@ namespace TechMAG.Controllers
         }
 
         // GET: Products/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _service.GetByIdAsync(id);

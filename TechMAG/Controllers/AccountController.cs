@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechMAG.Data;
@@ -21,7 +22,7 @@ namespace TechMAG.Controllers
             _context = context;
         }
 
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Users()
         {
             var users = await _context.Users.ToListAsync();

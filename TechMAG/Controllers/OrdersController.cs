@@ -19,6 +19,7 @@ namespace TechMAG.Controllers
             _ordersService = ordersService;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -52,6 +53,7 @@ namespace TechMAG.Controllers
             }
             return RedirectToAction(nameof(ShoppingCart));
         }
+        [Authorize]
         public async Task<IActionResult> RemoveItemFromShoppingCart(int id)
         {
             var item = await _productsService.GetProductByIdAsync(id);

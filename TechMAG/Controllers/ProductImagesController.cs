@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace TechMAG.Controllers
         }
 
         // GET: ProductImages/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int id)
         { 
             var productImage = await _service.GetByIdAsync(id);
@@ -40,6 +42,7 @@ namespace TechMAG.Controllers
         }
 
         // GET: ProductImages/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -50,6 +53,7 @@ namespace TechMAG.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,ProductImageURL,CreatedDate")] ProductImage productImage)
         {
             if (ModelState.IsValid)
@@ -61,6 +65,7 @@ namespace TechMAG.Controllers
         }
 
         // GET: ProductImages/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var productImage = await _service.GetByIdAsync(id);
@@ -76,6 +81,7 @@ namespace TechMAG.Controllers
         //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ProductImageURL,CreatedDate")] ProductImage productImage)
         {
             if (id != productImage.Id)
@@ -92,6 +98,7 @@ namespace TechMAG.Controllers
         }
 
         //// GET: ProductImages/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
 
@@ -107,6 +114,7 @@ namespace TechMAG.Controllers
         // POST: ProductImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var productImage = await _service.GetByIdAsync(id);

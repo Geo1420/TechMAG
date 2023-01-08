@@ -28,8 +28,9 @@
                             <a href="@Model.Producer.HomeURL"> @Model.Producer.Name </a>
                         </p>
                         <p class="card-text"><b>Category: </b>@Model.ProductCategory</p>
-                        <p class="card-text"><b>Old Price: </b><strike>$@Model.Price</strike></p>
-                        <p class="card-text"><b>New Price: </b>$@(Model.Price - Model.Discount)</p>
+                        <p class="card-text"><b>Price: </b>$@Model.Price</p>
+                        <p class="card-text"><b>Operating System: </b>@Model.OperatingSystem</p>
+                        <p class="card-text"><b>Screen Size: </b>@Model.ScreenSize inch</p>
                         <p class="card-text ">
                             <b>Status: </b>
                             @if (Model.Amount > 0)
@@ -65,9 +66,19 @@
                             <a class="btn btn-outline-primary float-right" asp-action="Index">
                                 Back to List
                             </a>
+                            @if(User.Identity.IsAuthenticated)
+                            {
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="btn btn-outline-primary float-center" asp-action="Edit" asp-route-id="@Model.Id">
+                                        Edit
+                                    </a>
+                                }
+                            }
                             <a class="btn btn-success text-white  @((Model.Amount <= 0) ? "disabled" : "")" 
                                asp-controller="Orders" 
-                               asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id"><i class="bi bi-cart-plus"></i> Add to Cart (Price $@(Model.Price - Model.Discount))</a>
+                               asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id"><i class="bi bi-cart-plus"></i> Add to Cart (Price $@(Model.Price)
+                           </a>
                         </p>
                     </div>
                 </div>
